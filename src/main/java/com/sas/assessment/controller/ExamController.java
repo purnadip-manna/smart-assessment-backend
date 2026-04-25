@@ -1,17 +1,58 @@
 package com.sas.assessment.controller;
 
+import com.sas.assessment.dto.exam.CreateExamRequest;
+import com.sas.assessment.dto.exam.ExamResponse;
+import com.sas.assessment.dto.exam.UpdateExamRequest;
+import com.sas.assessment.service.ExamService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/exams")
 public class ExamController {
+  private final ExamService examService;
+
+  public ExamController(ExamService examService) {
+    this.examService = examService;
+  }
 
   @GetMapping
-  public List<String> list() {
-    return List.of("Exam1", "Exam2");
+  public List<ExamResponse> list() {
+    // TODO: Need to pass the teacher
+    return examService.getExamsByTeacher();
+  }
+
+  @PostMapping
+  public ExamResponse create(@Valid @RequestBody CreateExamRequest request) {
+    // TODO: Need to pass the teacher
+    return examService.createExam(request);
+  }
+
+  @GetMapping("/{id}")
+  public ExamResponse get(@PathVariable UUID id) {
+    return examService.getExam(id);
+  }
+
+  @PutMapping("/{id}")
+  public ExamResponse update(@PathVariable UUID id, @Valid @RequestBody UpdateExamRequest request) {
+    return examService.updateExam(id, request);
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable UUID id) {
+    examService.deleteExam(id);
   }
 }
