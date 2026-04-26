@@ -8,11 +8,12 @@ import com.sas.assessment.dto.exam.UpdateExamRequest;
 import com.sas.assessment.exception.BadRequestException;
 import com.sas.assessment.exception.ResourceNotFoundException;
 import com.sas.assessment.repository.ExamRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ExamService {
   private final ExamRepository examRepository;
@@ -39,7 +40,7 @@ public class ExamService {
     return ExamResponse.from(findById(examId));
   }
 
-  public List<ExamResponse> getExamsByTeacher() {
+  public List<ExamResponse> getExams() {
     return examRepository.findAll().stream().map(ExamResponse::from).toList();
   }
 
