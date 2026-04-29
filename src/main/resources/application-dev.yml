@@ -3,3 +3,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/assessment
     username: admin
     password: password
+
+  flyway:
+    url: jdbc:postgresql://localhost:5432/assessment
+    user: admin
+    password: password
