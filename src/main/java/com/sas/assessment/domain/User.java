@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class User {
 
-  @Id private String userId; // Auth0 'sub' claim
+  @Id private String id; // Auth0 'sub' claim
 
   @Column(unique = true, nullable = false)
   private String email;

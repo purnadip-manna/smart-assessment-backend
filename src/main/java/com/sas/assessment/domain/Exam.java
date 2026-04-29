@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -55,6 +57,10 @@ public class Exam {
   @Column(name = "close_at")
   private OffsetDateTime closeAt;
 
+  @ManyToOne
+  @JoinColumn(name = "created_by")
+  private User createdBy;
+
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private OffsetDateTime createdAt;
@@ -74,11 +80,11 @@ public class Exam {
  - durationMins
  - openAt
  - closeAt
+ - createdBy (teacher)
  - createdAt
  - updatedAt
 
  TODO: Need to add the following fields
  - questions (list of questions)
- - created_at (teacher)
  - knowledge_base (for SQA question's answer evaluation)
 */
