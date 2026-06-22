@@ -1,15 +1,18 @@
-package com.sas.assessment.service;
+package com.sas.assessment.exam;
 
-import com.sas.assessment.domain.Exam;
-import com.sas.assessment.domain.ExamStatus;
-import com.sas.assessment.dto.exam.CreateExamRequest;
-import com.sas.assessment.dto.exam.ExamResponse;
-import com.sas.assessment.dto.exam.UpdateExamRequest;
+import com.sas.assessment.exam.domain.ExamStatus;
+import com.sas.assessment.exam.dto.CreateExamRequest;
+import com.sas.assessment.exam.dto.ExamResponse;
+import com.sas.assessment.exam.dto.UpdateExamRequest;
+import com.sas.assessment.exam.domain.Exam;
 import com.sas.assessment.exception.BadRequestException;
 import com.sas.assessment.exception.ResourceNotFoundException;
-import com.sas.assessment.repository.ExamRepository;
+
 import java.util.List;
 import java.util.UUID;
+
+import com.sas.assessment.user.UserService;
+import com.sas.assessment.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,7 @@ public class ExamService {
     this.userService = userService;
   }
 
-  public ExamResponse createExam(CreateExamRequest request) {
+  public ExamResponse createExam(CreateExamRequest request, User teacher) {
     Exam exam =
         Exam.builder()
             .examType(request.examType())
@@ -33,7 +36,7 @@ public class ExamService {
             .durationMins(request.durationMins())
             .openAt(request.openAt())
             .closeAt(request.closeAt())
-            .createdBy(userService.getCurrentUser())
+            .createdBy(teacher)
             .build();
 
     return ExamResponse.from(examRepository.save(exam));
@@ -47,8 +50,8 @@ public class ExamService {
     return examRepository.findAll().stream().map(ExamResponse::from).toList();
   }
 
-  public ExamResponse updateExam(UUID examId, UpdateExamRequest request) {
-    Exam exam = findAndVerifyOwnership(examId);
+  public ExamResponse updateExam(UUID examId, UpdateExamRequest request, User teacher) {
+    Exam exam = findAndVerifyOwnership(examId, teacher);
     verifyExamIsDraft(exam);
 
     if (request.title() != null) exam.setTitle(request.title());
@@ -60,14 +63,18 @@ public class ExamService {
     return ExamResponse.from(examRepository.save(exam));
   }
 
-  public void deleteExam(UUID examId) {
-    Exam exam = findAndVerifyOwnership(examId);
+  public void deleteExam(UUID examId, User teacher) {
+    Exam exam = findAndVerifyOwnership(examId, teacher);
     verifyExamIsDraft(exam);
     examRepository.delete(exam);
   }
 
-  private Exam findAndVerifyOwnership(UUID examId) {
-    return findById(examId);
+  public Exam findAndVerifyOwnership(UUID examId, User teacher) {
+    Exam exam = findById(examId);
+    if (!exam.getCreatedBy().getId().equals(teacher.getId())) {
+      throw new BadRequestException("You are not the owner of this exam");
+    }
+    return exam;
   }
 
   public Exam findById(UUID examId) {

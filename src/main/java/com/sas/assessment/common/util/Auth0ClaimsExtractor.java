@@ -1,6 +1,6 @@
-package com.sas.assessment.util;
+package com.sas.assessment.common.util;
 
-import com.sas.assessment.dto.user.Auth0User;
+import com.sas.assessment.common.dto.Auth0User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 

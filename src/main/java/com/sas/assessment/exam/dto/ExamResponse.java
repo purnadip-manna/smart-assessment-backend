@@ -1,8 +1,8 @@
-package com.sas.assessment.dto.exam;
+package com.sas.assessment.exam.dto;
 
-import com.sas.assessment.domain.Exam;
-import com.sas.assessment.domain.ExamStatus;
-import com.sas.assessment.domain.ExamType;
+import com.sas.assessment.exam.domain.Exam;
+import com.sas.assessment.exam.domain.ExamStatus;
+import com.sas.assessment.exam.domain.ExamType;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;

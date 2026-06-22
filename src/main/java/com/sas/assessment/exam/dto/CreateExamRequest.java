@@ -1,6 +1,6 @@
-package com.sas.assessment.dto.exam;
+package com.sas.assessment.exam.dto;
 
-import com.sas.assessment.domain.ExamType;
+import com.sas.assessment.exam.domain.ExamType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

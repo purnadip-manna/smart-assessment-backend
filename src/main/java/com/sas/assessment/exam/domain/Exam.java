@@ -1,5 +1,6 @@
-package com.sas.assessment.domain;
+package com.sas.assessment.exam.domain;
 
+import com.sas.assessment.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "exams")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -58,7 +59,7 @@ public class Exam {
   private OffsetDateTime closeAt;
 
   @ManyToOne
-  @JoinColumn(name = "created_by")
+  @JoinColumn(name = "created_by", nullable = false)
   private User createdBy;
 
   @CreationTimestamp

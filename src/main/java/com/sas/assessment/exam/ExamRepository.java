@@ -1,6 +1,6 @@
-package com.sas.assessment.repository;
+package com.sas.assessment.exam;
 
-import com.sas.assessment.domain.Exam;
+import com.sas.assessment.exam.domain.Exam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
