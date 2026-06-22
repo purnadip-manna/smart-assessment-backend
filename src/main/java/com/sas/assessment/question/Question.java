@@ -27,7 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Question {
 
   @Id

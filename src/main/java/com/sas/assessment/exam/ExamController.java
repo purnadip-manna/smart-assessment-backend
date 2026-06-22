@@ -37,16 +37,17 @@ public class ExamController {
     return examService.getExams();
   }
 
+  @GetMapping("/{id}")
+  public ExamResponse get(@PathVariable UUID id) {
+    return examService.getExam(id);
+  }
+
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('TEACHER')")
   public ExamResponse create(
       @Valid @RequestBody CreateExamRequest request, @AuthenticationPrincipal User teacher) {
     return examService.createExam(request, teacher);
-  }
-
-  @GetMapping("/{id}")
-  public ExamResponse get(@PathVariable UUID id) {
-    return examService.getExam(id);
   }
 
   @PutMapping("/{id}")
@@ -65,7 +66,14 @@ public class ExamController {
     examService.deleteExam(id, teacher);
   }
 
+  @GetMapping("/{examId}/questions")
+  public List<QuestionResponse> getQuestions(
+      @PathVariable UUID examId, @AuthenticationPrincipal User user) {
+    return questionService.getQuestions(examId, user);
+  }
+
   @PostMapping("/{examId}/questions")
+  @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('TEACHER')")
   public QuestionResponse addQuestion(
       @PathVariable UUID examId,
@@ -74,8 +82,33 @@ public class ExamController {
     return questionService.addQuestion(examId, request, teacher);
   }
 
-  @GetMapping("/{examId}/questions")
-  public List<QuestionResponse> getQuestions(@PathVariable UUID examId) {
-    return questionService.getQuestions(examId);
+  @PostMapping("/{examId}/questions/bulk")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasRole('TEACHER')")
+  public List<QuestionResponse> bulkAddQuestions(
+      @PathVariable UUID examId,
+      @Valid @RequestBody List<@Valid CreateQuestionRequest> requests,
+      @AuthenticationPrincipal User teacher) {
+    return questionService.addQuestions(examId, requests, teacher);
+  }
+
+  @PutMapping("/{examId}/questions/{questionId}")
+  @PreAuthorize("hasRole('TEACHER')")
+  public QuestionResponse updateQuestion(
+      @PathVariable UUID examId,
+      @PathVariable UUID questionId,
+      @Valid @RequestBody CreateQuestionRequest request,
+      @AuthenticationPrincipal User teacher) {
+    return questionService.updateQuestion(examId, questionId, request, teacher);
+  }
+
+  @DeleteMapping("/{examId}/questions/{questionId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('TEACHER')")
+  public void deleteQuestion(
+      @PathVariable UUID examId,
+      @PathVariable UUID questionId,
+      @AuthenticationPrincipal User teacher) {
+    questionService.deleteQuestion(examId, questionId, teacher);
   }
 }
