@@ -1,4 +1,4 @@
-package com.sas.assessment.dto.user;
+package com.sas.assessment.common.dto;
 
 import java.util.List;
 

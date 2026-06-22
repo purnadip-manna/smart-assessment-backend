@@ -1,4 +1,4 @@
-package com.sas.assessment.domain;
+package com.sas.assessment.user.domain;
 
 public enum Role {
   ADMIN,

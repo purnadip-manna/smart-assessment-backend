@@ -1,4 +1,4 @@
-package com.sas.assessment.dto.exam;
+package com.sas.assessment.exam.dto;
 
 import jakarta.validation.constraints.Min;
 
