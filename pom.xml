@@ -56,6 +56,20 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- AWS SNS-->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sns</artifactId>
+            <version>2.46.15</version>
+        </dependency>
+
+        <!-- AWS S3-->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.46.15</version>
+        </dependency>
+
         <!-- OAuth2 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

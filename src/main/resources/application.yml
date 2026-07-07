@@ -47,3 +47,23 @@ spring:
         provider:
           auth0:
             issuer-uri: ${AUTH0_ISSUER_URI}
+
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 30MB
+
+aws:
+  region: ${AWS_REGION:eu-west-1}
+  endpoint-override: ${AWS_ENDPOINT_OVERRIDE:}
+  access-key: ${AWS_ACCESS_KEY_ID:}
+  secret-key: ${AWS_SECRET_ACCESS_KEY:}
+  s3:
+    bucket: ${AWS_S3_KB_BUCKET}
+  sns:
+    document-uploaded-topic-arn: ${AWS_SNS_DOCUMENT_UPLOADED_TOPIC_ARN}
+    answer-grading-topic-arn: ${AWS_SNS_ANSWER_GRADING_TOPIC_ARN}
+  knowledge-base:
+    callback-secret: ${KB_CALLBACK_SECRET}
+    callback-base-url: ${KB_CALLBACK_BASE_URL:}
+    max-file-size-bytes: ${KB_MAX_FILE_SIZE_BYTES:26214400}

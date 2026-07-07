@@ -8,3 +8,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/assessment
     user: admin
     password: password
+
+aws:
+  region: us-east-1
+  endpoint-override: http://localhost:4566
+  access-key: test
+  secret-key: test
+  s3:
+    bucket: smart-assessment-kb-local
+  sns:
+    document-uploaded-topic-arn: arn:aws:sns:us-east-1:000000000000:document-uploaded
+    answer-grading-topic-arn: arn:aws:sns:us-east-1:000000000000:answer-grading
+  knowledge-base:
+    callback-secret: local-dev-secret
+    callback-base-url: http://localhost:8080
