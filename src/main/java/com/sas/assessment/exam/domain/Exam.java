@@ -58,6 +58,9 @@ public class Exam {
   @Column(name = "close_at")
   private OffsetDateTime closeAt;
 
+  @Column(name = "results_visible_at")
+  private OffsetDateTime resultsVisibleAt;
+
   @ManyToOne
   @JoinColumn(name = "created_by", nullable = false)
   private User createdBy;

@@ -66,6 +66,13 @@ public class ExamController {
     examService.deleteExam(id, teacher);
   }
 
+  @PutMapping("/{id}/show-results")
+  @PreAuthorize("hasRole('TEACHER')")
+  public ExamResponse showResults(
+      @PathVariable UUID id, @AuthenticationPrincipal User teacher) {
+    return examService.showResults(id, teacher);
+  }
+
   @GetMapping("/{examId}/questions")
   public List<QuestionResponse> getQuestions(
       @PathVariable UUID examId, @AuthenticationPrincipal User user) {

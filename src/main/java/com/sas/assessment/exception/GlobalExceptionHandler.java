@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
     return error(HttpStatus.BAD_REQUEST, ex.getMessage());
   }
 
+  @ExceptionHandler(ForbiddenException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public Map<String, Object> handleForbidden(ForbiddenException ex) {
+    return error(HttpStatus.FORBIDDEN, ex.getMessage());
+  }
+
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
   public Map<String, Object> handleMaxUploadSize(MaxUploadSizeExceededException ex) {

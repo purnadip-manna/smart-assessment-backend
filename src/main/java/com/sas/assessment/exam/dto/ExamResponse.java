@@ -16,6 +16,7 @@ public record ExamResponse(
     OffsetDateTime openAt,
     OffsetDateTime closeAt,
     ExamStatus status,
+    OffsetDateTime resultsVisibleAt,
     OffsetDateTime createdAt
     // TODO: Need to add the following fields: questionCount, created_by (Teacher Name),
     //  KnowledgeBase ID
@@ -31,6 +32,7 @@ public record ExamResponse(
         exam.getOpenAt(),
         exam.getCloseAt(),
         exam.getStatus(),
+        exam.getResultsVisibleAt(),
         exam.getCreatedAt());
   }
 }

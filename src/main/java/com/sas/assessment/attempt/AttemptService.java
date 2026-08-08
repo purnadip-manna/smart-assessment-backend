@@ -17,6 +17,7 @@ import com.sas.assessment.exam.domain.Exam;
 import com.sas.assessment.exam.domain.ExamStatus;
 import com.sas.assessment.exam.domain.ExamType;
 import com.sas.assessment.exception.BadRequestException;
+import com.sas.assessment.exception.ForbiddenException;
 import com.sas.assessment.exception.ResourceNotFoundException;
 import com.sas.assessment.question.Question;
 import com.sas.assessment.question.QuestionRepository;
@@ -134,6 +135,12 @@ public class AttemptService {
   @Transactional(readOnly = true)
   public AttemptResultResponse getResult(UUID attemptId, User student) {
     ExamAttempt attempt = findOwnedAttempt(attemptId, student);
+    Exam exam = attempt.getExam();
+    
+    if (exam.getResultsVisibleAt() == null) {
+      throw new ForbiddenException("Results are not yet available for this exam");
+    }
+    
     List<AnswerResultResponse> answers =
         answerRepository.findAllByAttempt(attempt).stream()
             .map(AnswerResultResponse::forResult)

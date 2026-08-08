@@ -8,6 +8,7 @@ import com.sas.assessment.exam.domain.Exam;
 import com.sas.assessment.exception.BadRequestException;
 import com.sas.assessment.exception.ResourceNotFoundException;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +68,12 @@ public class ExamService {
     Exam exam = findAndVerifyOwnership(examId, teacher);
     verifyExamIsDraft(exam);
     examRepository.delete(exam);
+  }
+
+  public ExamResponse showResults(UUID examId, User teacher) {
+    Exam exam = findAndVerifyOwnership(examId, teacher);
+    exam.setResultsVisibleAt(OffsetDateTime.now());
+    return ExamResponse.from(examRepository.save(exam));
   }
 
   public Exam findAndVerifyOwnership(UUID examId, User teacher) {
