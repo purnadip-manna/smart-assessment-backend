@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -21,9 +22,13 @@ import java.util.Map;
 public class SecurityConfig {
 
   private final OAuth2LoginSuccessHandler oauth2LoginSuccessHandler;
+  private final InternalApiKeyFilter internalApiKeyFilter;
 
-  public SecurityConfig(OAuth2LoginSuccessHandler oauth2LoginSuccessHandler) {
+  public SecurityConfig(
+      OAuth2LoginSuccessHandler oauth2LoginSuccessHandler,
+      InternalApiKeyFilter internalApiKeyFilter) {
     this.oauth2LoginSuccessHandler = oauth2LoginSuccessHandler;
+    this.internalApiKeyFilter = internalApiKeyFilter;
   }
 
   @Bean
@@ -31,12 +36,17 @@ public class SecurityConfig {
       HttpSecurity http, AccessDeniedHandler accessDeniedHandler) {
     return http.authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/actuator/health", "/swagger-ui/**", "/v3/api-docs/**")
+                auth.requestMatchers(
+                        "/actuator/health",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api/v1/internal/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
         .oauth2Login(oauth2 -> oauth2.successHandler(oauth2LoginSuccessHandler))
         .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler))
+        .addFilterBefore(internalApiKeyFilter, UsernamePasswordAuthenticationFilter.class)
         .cors(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .build();
