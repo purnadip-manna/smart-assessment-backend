@@ -1,5 +1,6 @@
 package com.sas.assessment.exam;
 
+import com.sas.assessment.exam.domain.ExamStatus;
 import com.sas.assessment.exam.dto.CreateExamRequest;
 import com.sas.assessment.exam.dto.ExamResponse;
 import com.sas.assessment.exam.dto.UpdateExamRequest;
@@ -59,6 +60,15 @@ public class ExamController {
     return examService.updateExam(id, request, teacher);
   }
 
+  @PostMapping("/{id}/{status}")
+  @PreAuthorize("hasRole('TEACHER')")
+  public ExamResponse updateStatus(
+      @PathVariable UUID id,
+      @PathVariable ExamStatus status,
+      @AuthenticationPrincipal User teacher) {
+    return examService.updateExamStatus(id, status, teacher);
+  }
+
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('TEACHER')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -68,8 +78,7 @@ public class ExamController {
 
   @PutMapping("/{id}/show-results")
   @PreAuthorize("hasRole('TEACHER')")
-  public ExamResponse showResults(
-      @PathVariable UUID id, @AuthenticationPrincipal User teacher) {
+  public ExamResponse showResults(@PathVariable UUID id, @AuthenticationPrincipal User teacher) {
     return examService.showResults(id, teacher);
   }
 

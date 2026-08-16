@@ -1,19 +1,17 @@
 package com.sas.assessment.exam;
 
+import com.sas.assessment.exam.domain.Exam;
 import com.sas.assessment.exam.domain.ExamStatus;
 import com.sas.assessment.exam.dto.CreateExamRequest;
 import com.sas.assessment.exam.dto.ExamResponse;
 import com.sas.assessment.exam.dto.UpdateExamRequest;
-import com.sas.assessment.exam.domain.Exam;
 import com.sas.assessment.exception.BadRequestException;
 import com.sas.assessment.exception.ResourceNotFoundException;
-
+import com.sas.assessment.user.UserService;
+import com.sas.assessment.user.domain.User;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-
-import com.sas.assessment.user.UserService;
-import com.sas.assessment.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +55,16 @@ public class ExamService {
 
     if (request.title() != null) exam.setTitle(request.title());
     if (request.description() != null) exam.setDescription(request.description());
-    if (request.status() != null) exam.setStatus(request.status());
     if (request.durationMins() != null) exam.setDurationMins(request.durationMins());
     if (request.openAt() != null) exam.setOpenAt(request.openAt());
     if (request.closeAt() != null) exam.setCloseAt(request.closeAt());
 
+    return ExamResponse.from(examRepository.save(exam));
+  }
+
+  public ExamResponse updateExamStatus(UUID examId, ExamStatus status, User teacher) {
+    Exam exam = findAndVerifyOwnership(examId, teacher);
+    exam.setStatus(status);
     return ExamResponse.from(examRepository.save(exam));
   }
 
