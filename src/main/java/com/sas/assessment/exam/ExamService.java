@@ -57,6 +57,7 @@ public class ExamService {
 
     if (request.title() != null) exam.setTitle(request.title());
     if (request.description() != null) exam.setDescription(request.description());
+    if (request.status() != null) exam.setStatus(request.status());
     if (request.durationMins() != null) exam.setDurationMins(request.durationMins());
     if (request.openAt() != null) exam.setOpenAt(request.openAt());
     if (request.closeAt() != null) exam.setCloseAt(request.closeAt());
